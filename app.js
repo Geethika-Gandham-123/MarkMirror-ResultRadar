@@ -1,79 +1,54 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    // Sample student database
-    const students = [
-        {
-            hallTicket: "22CSE101",
-            name: "Rahul Sharma",
-            department: "CSE",
-            semester: 1,
-            subjects: [
-                { name: "Mathematics", marks: 85, credits: 4 },
-                { name: "Physics", marks: 78, credits: 3 },
-                { name: "Programming", marks: 92, credits: 4 },
-                { name: "English", marks: 80, credits: 2 },
-                { name: "Chemistry", marks: 72, credits: 3 },
-                { name: "Electronics", marks: 88, credits: 3 }
-            ]
-        },
-        {
-            hallTicket: "22CSE102",
-            name: "Priya Reddy",
-            department: "CSE",
-            semester: 1,
-            subjects: [
-                { name: "Mathematics", marks: 90, credits: 4 },
-                { name: "Physics", marks: 85, credits: 3 },
-                { name: "Programming", marks: 95, credits: 4 },
-                { name: "English", marks: 88, credits: 2 },
-                { name: "Chemistry", marks: 82, credits: 3 },
-                { name: "Electronics", marks: 91, credits: 3 }
-            ]
-        },
-        {
-            hallTicket: "22CSE103",
-            name: "Arjun Kumar",
-            department: "CSE",
-            semester: 1,
-            subjects: [
-                { name: "Mathematics", marks: 65, credits: 4 },
-                { name: "Physics", marks: 58, credits: 3 },
-                { name: "Programming", marks: 70, credits: 4 },
-                { name: "English", marks: 75, credits: 2 },
-                { name: "Chemistry", marks: 60, credits: 3 },
-                { name: "Electronics", marks: 68, credits: 3 }
-            ]
-        },
-        {
-            hallTicket: "22CSE104",
-            name: "Sneha Patel",
-            department: "CSE",
-            semester: 1,
-            subjects: [
-                { name: "Mathematics", marks: 45, credits: 4 },
-                { name: "Physics", marks: 38, credits: 3 },
-                { name: "Programming", marks: 75, credits: 4 },
-                { name: "English", marks: 82, credits: 2 },
-                { name: "Chemistry", marks: 55, credits: 3 },
-                { name: "Electronics", marks: 60, credits: 3 }
-            ]
-        },
-        {
-            hallTicket: "22CSE105",
-            name: "Vikram Singh",
-            department: "CSE",
-            semester: 1,
-            subjects: [
-                { name: "Mathematics", marks: 35, credits: 4 },
-                { name: "Physics", marks: 42, credits: 3 },
-                { name: "Programming", marks: 55, credits: 4 },
-                { name: "English", marks: 65, credits: 2 },
-                { name: "Chemistry", marks: 32, credits: 3 },
-                { name: "Electronics", marks: 48, credits: 3 }
-            ]
-        }
+    // Generate 100 sample students automatically
+    const firstNames = [
+        "Aarav", "Ananya", "Rahul", "Priya", "Arjun",
+        "Sneha", "Karthik", "Divya", "Rohit", "Kavya"
     ];
+
+    const lastNames = [
+        "Sharma", "Reddy", "Kumar", "Patel", "Singh",
+        "Rao", "Gupta", "Verma", "Nair", "Das"
+    ];
+
+    const subjectNames = [
+        "Mathematics",
+        "Physics",
+        "Programming",
+        "English",
+        "Chemistry",
+        "Electronics"
+    ];
+
+    const credits = [4, 3, 4, 2, 3, 3];
+
+    const students = [];
+
+    for (let i = 0; i < 100; i++) {
+
+        const studentName =
+            firstNames[i % 10] + " " +
+            lastNames[Math.floor(i / 10)];
+
+        const subjects = subjectNames.map(function (subject, j) {
+            const marks = 35 + ((i * 13 + j * 17) % 65);
+
+            return {
+                name: subject,
+                marks: marks,
+                credits: credits[j]
+            };
+        });
+
+        students.push({
+            hallTicket: "22CSE" + (101 + i),
+            name: studentName,
+            department: "CSE",
+            semester: 1,
+            subjects: subjects
+        });
+    }
 
     // Grade point calculation
     function getGradePoint(marks) {
@@ -91,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let totalCredits = 0;
         let weightedPoints = 0;
 
-        student.subjects.forEach(subject => {
+        student.subjects.forEach(function (subject) {
             totalCredits += subject.credits;
             weightedPoints +=
                 getGradePoint(subject.marks) * subject.credits;
@@ -107,11 +82,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const pages = document.querySelectorAll(".page");
 
     function showPage(pageId) {
-        pages.forEach(page => {
+        pages.forEach(function (page) {
             page.classList.toggle("active", page.id === pageId);
         });
 
-        buttons.forEach(button => {
+        buttons.forEach(function (button) {
             button.classList.toggle(
                 "active",
                 button.dataset.page === pageId
@@ -119,13 +94,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    buttons.forEach(button => {
+    buttons.forEach(function (button) {
         button.addEventListener("click", function () {
             showPage(button.dataset.page);
         });
     });
 
-    document.querySelectorAll("[data-go]").forEach(button => {
+    document.querySelectorAll("[data-go]").forEach(function (button) {
         button.addEventListener("click", function () {
             showPage(button.dataset.go);
         });
@@ -141,26 +116,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 .getElementById("hallTicket")
                 .value.trim().toUpperCase();
 
-            const student = students.find(
-                s => s.hallTicket === hallTicket
-            );
+            const student = students.find(function (s) {
+                return s.hallTicket === hallTicket;
+            });
 
             const display = document.getElementById("resultDisplay");
 
             if (!student) {
                 display.innerHTML =
-                    "<p class='error'>Student not found! Please enter a valid Hall Ticket Number.</p>";
+                    "<p class='error'>Student not found! Enter a valid Hall Ticket Number.</p>";
                 return;
             }
-
-            const sgpa = calculateSGPA(student);
 
             let table = `
                 <h2>${student.name}</h2>
                 <p><strong>Hall Ticket:</strong> ${student.hallTicket}</p>
                 <p><strong>Department:</strong> ${student.department}</p>
                 <p><strong>Semester:</strong> ${student.semester}</p>
-                <h2>SGPA: ${sgpa}</h2>
+                <h2>SGPA: ${calculateSGPA(student)}</h2>
+
                 <table>
                     <tr>
                         <th>Subject</th>
@@ -171,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </tr>
             `;
 
-            student.subjects.forEach(subject => {
+            student.subjects.forEach(function (subject) {
                 table += `
                     <tr>
                         <td>${subject.name}</td>
@@ -193,12 +167,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const analytics = document.getElementById("analyticsContent");
 
     if (analytics) {
+
         let totalSubjects = 0;
         let passedSubjects = 0;
 
-        students.forEach(student => {
-            student.subjects.forEach(subject => {
+        students.forEach(function (student) {
+            student.subjects.forEach(function (subject) {
                 totalSubjects++;
+
                 if (subject.marks >= 40) {
                     passedSubjects++;
                 }
@@ -206,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         const passRate = (
-            (passedSubjects / totalSubjects) * 100
+            passedSubjects / totalSubjects * 100
         ).toFixed(2);
 
         analytics.innerHTML = `
@@ -238,9 +214,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const leaderboard = document.getElementById("leaderboardContent");
 
     if (leaderboard) {
-        const rankedStudents = [...students].sort(
-            (a, b) => calculateSGPA(b) - calculateSGPA(a)
-        );
+
+        const rankedStudents = [...students].sort(function (a, b) {
+            return calculateSGPA(b) - calculateSGPA(a);
+        });
 
         let html = `
             <table>
@@ -252,7 +229,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </tr>
         `;
 
-        rankedStudents.forEach((student, index) => {
+        rankedStudents.forEach(function (student, index) {
             html += `
                 <tr>
                     <td>${index + 1}</td>
@@ -264,6 +241,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         html += "</table>";
+
         leaderboard.innerHTML = html;
     }
 
@@ -272,6 +250,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (feeBtn) {
         feeBtn.addEventListener("click", function () {
+
             const count = Number(
                 document.getElementById("subjectCount").value
             );
@@ -296,10 +275,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const difficulty = document.getElementById("difficultyContent");
 
     if (difficulty) {
+
         const subjectStats = {};
 
-        students.forEach(student => {
-            student.subjects.forEach(subject => {
+        students.forEach(function (student) {
+            student.subjects.forEach(function (subject) {
+
                 if (!subjectStats[subject.name]) {
                     subjectStats[subject.name] = {
                         total: 0,
@@ -324,9 +305,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 </tr>
         `;
 
-        Object.keys(subjectStats).forEach(subject => {
+        Object.keys(subjectStats).forEach(function (subject) {
+
             const stats = subjectStats[subject];
-            const rate = (stats.failed / stats.total) * 100;
+
+            const rate =
+                stats.failed / stats.total * 100;
 
             let level = "Easy";
 
@@ -346,6 +330,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         html += "</table>";
+
         difficulty.innerHTML = html;
     }
 
@@ -353,22 +338,26 @@ document.addEventListener("DOMContentLoaded", function () {
     const trendsPage = document.getElementById("trends");
 
     if (trendsPage) {
+
         trendsPage.innerHTML += `
-            <h2>Current Semester Performance</h2>
-            <p>SGPA is calculated using subject marks and credits.</p>
+            <h2>Student Performance</h2>
+
             <table>
                 <tr>
                     <th>Student</th>
                     <th>Hall Ticket</th>
                     <th>SGPA</th>
                 </tr>
-                ${students.map(student => `
-                    <tr>
-                        <td>${student.name}</td>
-                        <td>${student.hallTicket}</td>
-                        <td>${calculateSGPA(student)}</td>
-                    </tr>
-                `).join("")}
+
+                ${students.map(function (student) {
+                    return `
+                        <tr>
+                            <td>${student.name}</td>
+                            <td>${student.hallTicket}</td>
+                            <td>${calculateSGPA(student)}</td>
+                        </tr>
+                    `;
+                }).join("")}
             </table>
         `;
     }
@@ -377,11 +366,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const batches = document.getElementById("batches");
 
     if (batches) {
+
         const averageSGPA = (
-            students.reduce(
-                (sum, student) => sum + Number(calculateSGPA(student)),
-                0
-            ) / students.length
+            students.reduce(function (sum, student) {
+                return sum + Number(calculateSGPA(student));
+            }, 0) / students.length
         ).toFixed(2);
 
         batches.innerHTML += `
@@ -392,7 +381,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
 
                 <div class="card">
-                    <h3>Students</h3>
+                    <h3>Total Students</h3>
                     <h2>${students.length}</h2>
                 </div>
 
@@ -404,6 +393,6 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
     }
 
-    console.log("MarkMirror ResultRadar Rush is ready!");
+    console.log("100 students successfully generated!");
 
 });
