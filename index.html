@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarkMirror - ResultRadar Rush</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <h2>MarkMirror</h2>
+        <p>ResultRadar Rush</p>
+
+        <button class="nav-btn active" data-page="dashboard">Dashboard</button>
+        <button class="nav-btn" data-page="results">Result Lookup</button>
+        <button class="nav-btn" data-page="analytics">Analytics</button>
+        <button class="nav-btn" data-page="leaderboard">Leaderboard</button>
+        <button class="nav-btn" data-page="trends">Student Trends</button>
+        <button class="nav-btn" data-page="reevaluation">Re-evaluation</button>
+        <button class="nav-btn" data-page="difficulty">Difficulty Index</button>
+        <button class="nav-btn" data-page="batches">Batch Comparison</button>
+    </aside>
+
+    <main>
+
+        <section class="page active" id="dashboard">
+            <h1>Dashboard</h1>
+            <p>Welcome to MarkMirror ResultRadar Rush</p>
+
+            <div class="cards">
+                <div class="card">
+                    <h3>Total Students</h3>
+                    <h2>120</h2>
+                </div>
+
+                <div class="card">
+                    <h3>Subjects</h3>
+                    <h2>6</h2>
+                </div>
+
+                <div class="card">
+                    <h3>Departments</h3>
+                    <h2>3</h2>
+                </div>
+            </div>
+        </section>
+
+        <section class="page" id="results">
+            <h1>Result Lookup</h1>
+
+            <input type="text" id="hallTicket"
+                   placeholder="Enter Hall Ticket Number">
+
+            <button id="searchBtn">Search Result</button>
+
+            <div id="resultDisplay"></div>
+        </section>
+
+        <section class="page" id="analytics">
+            <h1>Analytics</h1>
+            <div id="analyticsContent"></div>
+        </section>
+
+        <section class="page" id="leaderboard">
+            <h1>Leaderboard</h1>
+            <div id="leaderboardContent"></div>
+        </section>
+
+        <section class="page" id="trends">
+            <h1>Student Trends</h1>
+            <p>Historical SGPA trends</p>
+        </section>
+
+        <section class="page" id="reevaluation">
+            <h1>Re-evaluation Fee Calculator</h1>
+
+            <input type="number" id="subjectCount"
+                   placeholder="Number of subjects" min="1">
+
+            <button id="feeBtn">Calculate Fee</button>
+
+            <h2 id="feeResult"></h2>
+        </section>
+
+        <section class="page" id="difficulty">
+            <h1>Difficulty Index</h1>
+            <div id="difficultyContent"></div>
+        </section>
+
+        <section class="page" id="batches">
+            <h1>Batch Comparison</h1>
+            <p>Compare academic performance between batches.</p>
+        </section>
+
+    </main>
+
+    <script src="app.js"></script>
+
+</body>
+</html>
