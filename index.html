@@ -1,102 +1,846 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MarkMirror - ResultRadar Rush</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MarkMirror | Student Analytics</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+    background: #f3f5fb;
+    color: #172044;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 245px;
+    height: 100vh;
+    background: #111936;
+    color: white;
+    position: fixed;
+    padding: 25px 16px;
+    left: 0;
+    top: 0;
+    overflow-y: auto;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    margin: 10px 12px 35px;
+    color: #fff;
+}
+
+.logo span {
+    color: #8198ff;
+}
+
+.sidebar h4 {
+    color: #8995b8;
+    font-size: 12px;
+    margin: 25px 12px 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.sidebar a {
+    display: block;
+    padding: 13px 14px;
+    margin: 5px 0;
+    text-decoration: none;
+    color: #c6cce0;
+    border-radius: 9px;
+    transition: .3s;
+    cursor: pointer;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+    background: #35447c;
+    color: white;
+}
+
+/* MAIN */
+.main {
+    margin-left: 245px;
+    padding: 30px;
+    min-height: 100vh;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 15px;
+}
+
+.topbar h2 {
+    font-size: 25px;
+}
+
+.profile {
+    background: white;
+    padding: 10px 17px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+/* SECTIONS */
+.section {
+    background: white;
+    padding: 23px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 18px rgba(30, 45, 90, .05);
+    scroll-margin-top: 20px;
+}
+
+.section h2 {
+    font-size: 23px;
+    margin-bottom: 20px;
+}
+
+/* SEARCH */
+.search-box {
+    display: flex;
+    gap: 10px;
+    max-width: 650px;
+}
+
+.search-box input {
+    flex: 1;
+    min-width: 0;
+    padding: 14px;
+    border: 1px solid #d9dfed;
+    border-radius: 9px;
+    outline: none;
+    font-size: 15px;
+}
+
+.search-box input:focus {
+    border-color: #526de5;
+}
+
+button {
+    background: #354bd6;
+    color: white;
+    padding: 13px 20px;
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+button:hover {
+    background: #2436ae;
+}
+
+.result-message {
+    margin-top: 18px;
+}
+
+/* ANALYTICS */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.card {
+    background: white;
+    padding: 23px;
+    border-radius: 14px;
+    border-left: 5px solid #4057dd;
+    box-shadow: 0 4px 18px rgba(30, 45, 90, .05);
+}
+
+.card p {
+    color: #737d99;
+    font-size: 14px;
+    margin-bottom: 13px;
+}
+
+.card h2 {
+    font-size: 29px;
+    color: #2539bb;
+}
+
+/* TABLE */
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 560px;
+}
+
+th, td {
+    padding: 13px 15px;
+    text-align: left;
+    border-bottom: 1px solid #edf0f6;
+    font-size: 14px;
+}
+
+th {
+    background: #f0f3ff;
+    color: #293a9d;
+}
+
+tr:hover td {
+    background: #f8f9ff;
+}
+
+/* RESULT */
+.result-card {
+    background: #f5f7ff;
+    border: 1px solid #e1e6ff;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.result-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.result-item {
+    background: white;
+    padding: 15px;
+    border-radius: 9px;
+}
+
+.result-item small {
+    color: #7b849c;
+}
+
+.result-item h3 {
+    margin-top: 7px;
+    color: #293bbd;
+}
+
+.status {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.pass {
+    background: #dcfce7;
+    color: #168044;
+}
+
+.fail {
+    background: #fee2e2;
+    color: #c12c2c;
+}
+
+/* CHARTS */
+.chart {
+    display: flex;
+    align-items: end;
+    justify-content: space-around;
+    height: 220px;
+    border-bottom: 1px solid #ddd;
+    gap: 12px;
+    padding: 10px 5px 0;
+}
+
+.bar-group {
+    flex: 1;
+    text-align: center;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center;
+    gap: 7px;
+}
+
+.bar {
+    width: min(55px, 75%);
+    background: linear-gradient(#7288ff, #354bd6);
+    border-radius: 7px 7px 0 0;
+    min-height: 5px;
+}
+
+.bar-group small {
+    font-size: 11px;
+    color: #68728c;
+}
+
+/* FORMS */
+.form-control {
+    width: 100%;
+    max-width: 500px;
+    display: block;
+    padding: 13px;
+    margin: 12px 0;
+    border: 1px solid #dce1ec;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.footer {
+    text-align: center;
+    padding: 20px;
+    color: #7c849a;
+    font-size: 13px;
+}
+
+@media(max-width: 1050px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 700px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 12px;
+    }
+
+    .logo {
+        margin: 8px;
+    }
+
+    .sidebar h4 {
+        display: none;
+    }
+
+    .sidebar nav {
+        display: flex;
+        overflow-x: auto;
+        gap: 5px;
+    }
+
+    .sidebar a {
+        white-space: nowrap;
+        padding: 10px;
+        font-size: 13px;
+    }
+
+    .main {
+        margin-left: 0;
+        padding: 16px;
+    }
+
+    .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .card h2 {
+        font-size: 23px;
+    }
+
+    .topbar {
+        align-items: flex-start;
+    }
+
+    .topbar h2 {
+        font-size: 20px;
+    }
+
+    .result-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .search-box {
+        flex-direction: column;
+    }
+}
+
+@media(max-width: 380px) {
+    .cards {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
 </head>
 
 <body>
 
-    <aside class="sidebar">
-        <h2>MarkMirror</h2>
-        <p>ResultRadar Rush</p>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <div class="logo">Mark<span>Mirror.</span></div>
 
-        <button class="nav-btn active" data-page="dashboard">Dashboard</button>
-        <button class="nav-btn" data-page="results">Result Lookup</button>
-        <button class="nav-btn" data-page="analytics">Analytics</button>
-        <button class="nav-btn" data-page="leaderboard">Leaderboard</button>
-        <button class="nav-btn" data-page="trends">Student Trends</button>
-        <button class="nav-btn" data-page="reevaluation">Re-evaluation</button>
-        <button class="nav-btn" data-page="difficulty">Difficulty Index</button>
-        <button class="nav-btn" data-page="batches">Batch Comparison</button>
-    </aside>
+    <h4>Dashboard Menu</h4>
+    <nav>
+        <a href="#lookup" class="active">🔍 Result Lookup</a>
+        <a href="#analytics">📊 Analytics</a>
+        <a href="#leaderboard">🏆 Leaderboard</a>
+        <a href="#trends">📈 Student Trends</a>
+        <a href="#reevaluation">📝 Re-evaluation</a>
+        <a href="#difficulty">📚 Difficulty Index</a>
+        <a href="#comparison">📉 Batch Comparison</a>
+    </nav>
+</aside>
 
-    <main>
+<!-- MAIN CONTENT -->
+<main class="main">
 
-        <section class="page active" id="dashboard">
-            <h1>Dashboard</h1>
-            <p>Welcome to MarkMirror ResultRadar Rush</p>
+    <div class="topbar">
+        <h2>Student Dashboard</h2>
+        <div class="profile">👤 Admin</div>
+    </div>
 
-            <div class="cards">
-                <div class="card">
-                    <h3>Total Students</h3>
-                    <h2>120</h2>
+    <!-- RESULT LOOKUP -->
+    <section class="section" id="lookup">
+        <h2>Result Lookup</h2>
+        <p style="color:#7b849c;margin-bottom:15px">
+            Enter your Hall Ticket Number to view your result.
+        </p>
+
+        <div class="search-box">
+            <input type="text" id="hallTicket"
+                   placeholder="Enter Hall Ticket Number"
+                   onkeydown="if(event.key==='Enter') searchResult()">
+            <button onclick="searchResult()">Search Result</button>
+        </div>
+
+        <div class="result-message" id="result"></div>
+    </section>
+
+    <!-- ANALYTICS -->
+    <section id="analytics">
+        <h2 style="margin-bottom:18px">Analytics Overview</h2>
+
+        <div class="cards">
+            <div class="card">
+                <p>Total Students</p>
+                <h2 id="totalStudents">100</h2>
+            </div>
+
+            <div class="card">
+                <p>Total Subject Records</p>
+                <h2 id="totalRecords">600</h2>
+            </div>
+
+            <div class="card">
+                <p>Passed Students</p>
+                <h2 id="passedStudents">--</h2>
+            </div>
+
+            <div class="card">
+                <p>Pass Percentage</p>
+                <h2 id="passPercentage">--</h2>
+            </div>
+        </div>
+    </section>
+
+    <!-- LEADERBOARD -->
+    <section class="section" id="leaderboard">
+        <h2>🏆 Leaderboard</h2>
+        <p style="color:#7b849c;margin-bottom:15px">
+            Top 10 students ranked by SGPA.
+        </p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Hall Ticket</th>
+                        <th>SGPA</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboardBody"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- STUDENT TRENDS -->
+    <section class="section" id="trends">
+        <h2>📈 Student Performance Trends</h2>
+        <p style="color:#7b849c;margin-bottom:15px">
+            Average performance across six subjects.
+        </p>
+        <div class="chart" id="trendChart"></div>
+    </section>
+
+    <!-- RE-EVALUATION -->
+    <section class="section" id="reevaluation">
+        <h2>📝 Re-evaluation Request</h2>
+
+        <form id="reForm">
+            <input class="form-control" id="reHall"
+                   placeholder="Enter Hall Ticket Number" required>
+
+            <select class="form-control" id="reSubject" required>
+                <option value="">Select Subject</option>
+                <option>Mathematics</option>
+                <option>Physics</option>
+                <option>Chemistry</option>
+                <option>Programming</option>
+                <option>English</option>
+                <option>Data Structures</option>
+            </select>
+
+            <textarea class="form-control" id="reReason"
+                      placeholder="Enter reason for re-evaluation"
+                      rows="4" required></textarea>
+
+            <button type="submit">Submit Request</button>
+        </form>
+
+        <p id="reMessage" style="margin-top:15px"></p>
+    </section>
+
+    <!-- DIFFICULTY INDEX -->
+    <section class="section" id="difficulty">
+        <h2>📚 Subject Difficulty Index</h2>
+        <p style="color:#7b849c;margin-bottom:15px">
+            Estimated difficulty based on sample student marks.
+        </p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Average Marks</th>
+                        <th>Difficulty</th>
+                    </tr>
+                </thead>
+                <tbody id="difficultyBody"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- BATCH COMPARISON -->
+    <section class="section" id="comparison">
+        <h2>📉 Batch Comparison</h2>
+        <p style="color:#7b849c;margin-bottom:15px">
+            Average SGPA by sample batch.
+        </p>
+
+        <div class="chart" id="batchChart"></div>
+    </section>
+
+    <div class="footer">
+        © 2026 MarkMirror | Student Result Analytics System
+    </div>
+
+</main>
+
+<script>
+
+/* SAMPLE STUDENT DATA */
+
+const firstNames = [
+    "Rahul", "Priya", "Divya", "Rohit", "Ananya",
+    "Arjun", "Sneha", "Kiran", "Meena", "Vikram"
+];
+
+const lastNames = [
+    "Sharma", "Reddy", "Kumar", "Patel", "Singh",
+    "Rao", "Verma", "Gupta", "Das", "Naidu"
+];
+
+const subjects = [
+    "Mathematics",
+    "Physics",
+    "Chemistry",
+    "Programming",
+    "English",
+    "Data Structures"
+];
+
+const students = [];
+
+for (let i = 0; i < 100; i++) {
+
+    const name = firstNames[i % 10] + " " +
+                 lastNames[Math.floor(i / 10)];
+
+    const marks = subjects.map((subject, j) => {
+        return 45 + ((i * 7 + j * 9) % 56);
+    });
+
+    const average = marks.reduce((a,b) => a+b, 0) / 6;
+
+    const sgpa = Math.max(
+        0,
+        Math.min(10, (average / 10).toFixed(2) * 1)
+    );
+
+    students.push({
+        name: name,
+        hall: "22CSE" + (103 + i),
+        marks: marks,
+        sgpa: sgpa,
+        passed: marks.every(mark => mark >= 40)
+    });
+}
+
+/* ANALYTICS */
+
+const passed = students.filter(s => s.passed).length;
+
+document.getElementById("totalStudents").textContent =
+    students.length;
+
+document.getElementById("totalRecords").textContent =
+    students.length * subjects.length;
+
+document.getElementById("passedStudents").textContent =
+    passed;
+
+document.getElementById("passPercentage").textContent =
+    (passed / students.length * 100).toFixed(1) + "%";
+
+/* RESULT SEARCH */
+
+function searchResult() {
+
+    const hall = document.getElementById("hallTicket")
+                       .value.trim().toUpperCase();
+
+    const output = document.getElementById("result");
+
+    if (!hall) {
+        output.innerHTML =
+            "<p style='color:red'>Please enter a Hall Ticket Number.</p>";
+        return;
+    }
+
+    const student = students.find(
+        s => s.hall.toUpperCase() === hall
+    );
+
+    if (!student) {
+        output.innerHTML =
+            "<p style='color:red'>No student found. Please check the Hall Ticket Number.</p>";
+        return;
+    }
+
+    let subjectRows = "";
+
+    subjects.forEach((subject, index) => {
+
+        const mark = student.marks[index];
+
+        subjectRows += `
+            <tr>
+                <td>${subject}</td>
+                <td>${mark}</td>
+                <td>${mark >= 40 ? "PASS" : "FAIL"}</td>
+            </tr>
+        `;
+    });
+
+    output.innerHTML = `
+        <div class="result-card">
+            <h3>Student Result</h3>
+            <br>
+            <p><b>Name:</b> ${student.name}</p>
+            <p><b>Hall Ticket:</b> ${student.hall}</p>
+
+            <div class="result-grid">
+                <div class="result-item">
+                    <small>SGPA</small>
+                    <h3>${student.sgpa.toFixed(2)}</h3>
                 </div>
 
-                <div class="card">
-                    <h3>Subjects</h3>
-                    <h2>6</h2>
+                <div class="result-item">
+                    <small>Subjects</small>
+                    <h3>6</h3>
                 </div>
 
-                <div class="card">
-                    <h3>Departments</h3>
-                    <h2>3</h2>
+                <div class="result-item">
+                    <small>Status</small>
+                    <h3>
+                        <span class="status ${student.passed ? "pass" : "fail"}">
+                            ${student.passed ? "PASS" : "FAIL"}
+                        </span>
+                    </h3>
                 </div>
             </div>
-        </section>
 
-        <section class="page" id="results">
-            <h1>Result Lookup</h1>
+            <h3 style="margin:20px 0 12px">Subject-wise Marks</h3>
 
-            <input type="text" id="hallTicket"
-                   placeholder="Enter Hall Ticket Number">
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Marks</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>${subjectRows}</tbody>
+                </table>
+            </div>
+        </div>
+    `;
+}
 
-            <button id="searchBtn">Search Result</button>
+/* LEADERBOARD */
 
-            <div id="resultDisplay"></div>
-        </section>
+const leaderboard = [...students]
+    .sort((a,b) => b.sgpa - a.sgpa)
+    .slice(0,10);
 
-        <section class="page" id="analytics">
-            <h1>Analytics</h1>
-            <div id="analyticsContent"></div>
-        </section>
+document.getElementById("leaderboardBody").innerHTML =
+    leaderboard.map((student, index) => `
+        <tr>
+            <td>${index + 1}</td>
+            <td>${student.name}</td>
+            <td>${student.hall}</td>
+            <td><b>${student.sgpa.toFixed(2)}</b></td>
+        </tr>
+    `).join("");
 
-        <section class="page" id="leaderboard">
-            <h1>Leaderboard</h1>
-            <div id="leaderboardContent"></div>
-        </section>
+/* STUDENT TRENDS */
 
-        <section class="page" id="trends">
-            <h1>Student Trends</h1>
-            <p>Historical SGPA trends</p>
-        </section>
+const trendChart = document.getElementById("trendChart");
 
-        <section class="page" id="reevaluation">
-            <h1>Re-evaluation Fee Calculator</h1>
+trendChart.innerHTML = subjects.map((subject, index) => {
 
-            <input type="number" id="subjectCount"
-                   placeholder="Number of subjects" min="1">
+    const average = students.reduce(
+        (sum, s) => sum + s.marks[index], 0
+    ) / students.length;
 
-            <button id="feeBtn">Calculate Fee</button>
+    return `
+        <div class="bar-group">
+            <b>${average.toFixed(0)}</b>
+            <div class="bar"
+                 style="height:${average}%"
+                 title="${subject}: ${average.toFixed(1)}">
+            </div>
+            <small>${subject.split(" ")[0]}</small>
+        </div>
+    `;
 
-            <h2 id="feeResult"></h2>
-        </section>
+}).join("");
 
-        <section class="page" id="difficulty">
-            <h1>Difficulty Index</h1>
-            <div id="difficultyContent"></div>
-        </section>
+/* RE-EVALUATION */
 
-        <section class="page" id="batches">
-            <h1>Batch Comparison</h1>
-            <p>Compare academic performance between batches.</p>
-        </section>
+document.getElementById("reForm").addEventListener(
+    "submit", function(event) {
 
-    </main>
+    event.preventDefault();
 
-    <script src="app.js"></script>
+    const hall = document.getElementById("reHall")
+                       .value.trim().toUpperCase();
+
+    const student = students.find(s => s.hall === hall);
+
+    if (!student) {
+        document.getElementById("reMessage").innerHTML =
+            "<span style='color:red'>Student not found. Check the Hall Ticket Number.</span>";
+        return;
+    }
+
+    const subject = document.getElementById("reSubject").value;
+    const reason = document.getElementById("reReason").value;
+
+    document.getElementById("reMessage").innerHTML = `
+        <span style="color:green">
+            Request submitted successfully for ${student.name}.
+            <br>Subject: ${subject}
+            <br>Demo status: Pending
+        </span>
+    `;
+
+    this.reset();
+});
+
+/* DIFFICULTY INDEX */
+
+document.getElementById("difficultyBody").innerHTML =
+    subjects.map((subject, index) => {
+
+        const average = students.reduce(
+            (sum,s) => sum + s.marks[index], 0
+        ) / students.length;
+
+        let difficulty;
+
+        if (average >= 70) {
+            difficulty = "Easy";
+        } else if (average >= 55) {
+            difficulty = "Moderate";
+        } else {
+            difficulty = "Difficult";
+        }
+
+        return `
+            <tr>
+                <td>${subject}</td>
+                <td>${average.toFixed(1)}</td>
+                <td>${difficulty}</td>
+            </tr>
+        `;
+    }).join("");
+
+/* BATCH COMPARISON */
+
+const batches = [
+    {name:"Batch A", start:0, end:25},
+    {name:"Batch B", start:25, end:50},
+    {name:"Batch C", start:50, end:75},
+    {name:"Batch D", start:75, end:100}
+];
+
+document.getElementById("batchChart").innerHTML =
+    batches.map(batch => {
+
+        const group = students.slice(batch.start, batch.end);
+
+        const average = group.reduce(
+            (sum,s) => sum + s.sgpa, 0
+        ) / group.length;
+
+        return `
+            <div class="bar-group">
+                <b>${average.toFixed(1)}</b>
+                <div class="bar"
+                     style="height:${average * 10}%"
+                     title="${batch.name}: ${average.toFixed(2)}">
+                </div>
+                <small>${batch.name}</small>
+            </div>
+        `;
+    }).join("");
+
+/* ACTIVE SIDEBAR */
+
+document.querySelectorAll(".sidebar a").forEach(link => {
+
+    link.addEventListener("click", function() {
+
+        document.querySelectorAll(".sidebar a")
+            .forEach(a => a.classList.remove("active"));
+
+        this.classList.add("active");
+    });
+});
+
+</script>
 
 </body>
 </html>
